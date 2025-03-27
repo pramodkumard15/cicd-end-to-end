@@ -20,7 +20,7 @@ pipeline {
                 script {
                     bat '''
                     echo Build Docker Image
-                    docker build -t pramodkumard15/cicd-e2e:${BUILD_NUMBER} .
+                    docker build -t pramodkumard15/cicd-e2e:%BUILD_NUMBER% .
                     '''
                 }
             }
@@ -31,7 +31,7 @@ pipeline {
                 script {
                     bat '''
                     echo Push to DockerHub
-                    docker push pramodkumard15/cicd-e2e:${BUILD_NUMBER}
+                    docker push pramodkumard15/cicd-e2e:%BUILD_NUMBER%
                     '''
                 }
             }
@@ -51,7 +51,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'f87a34a8-0e09-45e7-b9cf-6dc68feac670', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         bat '''
                         type deploy.yaml
-                        sed -i "s/32/${BUILD_NUMBER}/g" deploy.yaml
+                        sed -i "s/32/%BUILD_NUMBER%/g" deploy.yaml
                         type deploy.yaml
                         git add deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
